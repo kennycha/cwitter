@@ -29,7 +29,7 @@
   - firebase 설정파일 생성
 
     ```js
-    // firebase.js
+    // fbase.js
     
     import * as firebase from "firebase/app";
     
@@ -83,3 +83,55 @@
   - `AppRouter` 컴포넌트의 state를 React Hooks를 통해 관리
   - `isLoggedIn`의 상태에 따라 다른 Route들을 return
     - 삼항연산자를 통해
+
+## Firebase Auth
+
+### Firebase auth
+
+- [Firebase Docs|firebase.auth](https://firebase.google.com/docs/reference/js/firebase.auth)
+
+- 기능 import
+
+  - Firebase의 각 기능들을 사용하기 위해서는, firebase import와는 별개로 따로 import 해야 한다
+
+  - 불러온 기능을 `fbase.js` 파일 내에서 실행한 후 export 하여 재사용하는 방식
+
+    - 기능 자체를 export 하여 재사용하면 매번 실행하므로 비효율적일 수 있다
+
+    ```js
+    // fbase.js
+    
+    import * as firebase from "firebase/app";
+    import "firebase/auth";
+    
+    const firebaseConfig = {
+      ...
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    
+    export const authService = firebase.auth();
+    ```
+
+### 절대경로 import 설정
+
+- `baseUrl` 설정
+
+  - 기존의 `../components` 와 같은 상대경로 import를 `component` 와 같은 절대경로로 import 할 수 있다
+
+    - `src/components` 일 때
+
+  - 프로젝트 root dir에 `jsconfig.json` 을 작성
+
+    - `compilerOptions` 중 `baseUrl` 과 `include`를 설정
+
+    ```json
+    {
+      "compilerOptions": {
+        "baseUrl": "src"
+      },
+      "include": ["src"]
+    }
+    ```
+
+    
