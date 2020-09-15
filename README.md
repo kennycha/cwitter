@@ -86,7 +86,7 @@
 
 ## Firebase Auth
 
-### Firebase auth
+### Firebase Auth
 
 - [Firebase Docs|firebase.auth](https://firebase.google.com/docs/reference/js/firebase.auth)
 
@@ -112,6 +112,19 @@
     
     export const authService = firebase.auth();
     ```
+  
+- `firebase.auth()`
+
+  - `Auth` 를 반환
+  - 반환된 `Auth`와 그 properties / methods를 재사용
+  - properties 예시
+    - `currentUser`
+  - methods 예시
+    - `createUserWithEmailAndPassword()`
+    - `onAuthStateChanged()`
+    - `signInWithEmailAndPassword()`
+    - `signInWithPopup()`
+    - `signOut()`
 
 ### 절대경로 import 설정
 
@@ -134,4 +147,37 @@
     }
     ```
 
-    
+
+### HTML Symbols
+
+- [w3schools|HTML Symbols](https://www.w3schools.com/html/html_symbols.asp)
+  - Many mathematical, technical, and currency symbols, are not present on a normal keyboard.
+  - To add such symbols to an HTML page, you can use the entity name or the entity number (a decimal or a hexadecimal reference) for the symbol.
+- 예시
+  - `&copy;` => &copy;
+  - `&reg;` => &reg;
+
+### Set Up Sign-in Method of Firebase Project
+
+> console -> Authentication -> Sign-in method
+
+- Sign-in method
+
+  - [Firebase|Authentication Sign-in method](https://console.firebase.google.com/u/0/project/cwitter-6d56a/authentication/providers)
+
+  - 사용할 로그인 방법을 수동으로 설정
+
+    - ex) 이메일/비밀번호, Google, GitHub
+    - Google method 는 지원 이메일 필요
+    - Github method는 Client ID와 Secret Key 필요
+
+  - Setup for Github method
+
+    > Github -> Settings -> Developer Settings -> OAuth Apps -> New OAuth App
+
+    - 앱 이름, 홈페이지 URL, Authorization callback URL을 입력한 후 Register
+      - 이때, 콜백 URL은 Firebase에서 제공하는 콜백 URL을 사용
+      - 홈페이지 URL은 콜백 URL의 Root 주소를 사용
+    - 등록 후 제공되는 Client ID와 Client Secret을 Firebase 에 입력한 후 저장
+
+### 
