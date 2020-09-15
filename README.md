@@ -180,7 +180,7 @@
       - 홈페이지 URL은 콜백 URL의 Root 주소를 사용
     - 등록 후 제공되는 Client ID와 Client Secret을 Firebase 에 입력한 후 저장
 
-### 유저 생성 및 로그인
+### 이메일 로그인 구현
 
 - `EmailAuthProvider`
   - [Firebase|Authentication EmailAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.EmailAuthProvider)
@@ -251,4 +251,23 @@
   - [Firebase|Authentication onAuthStateChanged](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#onauthstatechanged)
   - Adds an observer for changes to the user's sign-in state
   - 콜백함수를 인자로 받아, auth state에 변화가 생길 때마다 호출
+
+### Social Login 구현
+
+- `signInWithPopup`
+
+  - [Firebase|Authentication signInWithPopup](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signinwithpopup)
+
+  - social login 제공자에 따라 provider를 생성하고, 이를 인자에 담아서 `signInWithPopup` method를 호출
+
+    - 이때, 버튼 `name` property에 따라 해당하는 제공자의 provider를 생성
+
+    ```js
+    let provider;
+    if (name === "google") {
+      provider = new firebaseInstance.auth.GoogleAuthProvider();
+    } else if (name === "github") {
+      provider = new firebaseInstance.auth.GithubAuthProvider();
+    }
+    ```
 
