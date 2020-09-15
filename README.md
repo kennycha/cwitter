@@ -157,7 +157,7 @@
   - `&copy;` => &copy;
   - `&reg;` => &reg;
 
-### Set Up Sign-in Method of Firebase Project
+### Firebase Sign-in Method 설정
 
 > console -> Authentication -> Sign-in method
 
@@ -180,7 +180,7 @@
       - 홈페이지 URL은 콜백 URL의 Root 주소를 사용
     - 등록 후 제공되는 Client ID와 Client Secret을 Firebase 에 입력한 후 저장
 
-### Create Account
+### 유저 생성 및 로그인
 
 - `EmailAuthProvider`
   - [Firebase|Authentication EmailAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.EmailAuthProvider)
@@ -226,4 +226,29 @@
     - default는 local
 
   - `Application -> Storage -> IndexedDB -> firebaseLocalStorageDb` 에서 유저 유지 확인 가능 (local인 경우)
-  - 
+
+### 앱 초기화 시 유저 체크
+
+> 로그인 후 리렌더링 될 떄, 계정 생성 버튼이 로그인 버튼으로 바뀌지 않는 문제 -> 유저 정보를 로컬에서 읽어오기 전에 리렌더딩 해버리기 때문
+
+- `useEffect`
+
+  - 클래스형 컴포넌트의 life cycle에 해당하는 hook
+
+    - {} 안의 내용은 mounted
+    - [] 안의 내용은 updated
+    - return 문의 내용은 unmounted
+
+  - render시 auth state 변화를 감지하는 `onAuthStateChanged` 이벤트 정의
+
+    ```jsx
+    useEffect(() => {
+        authService.onAuthStateChanged((user) => console.log(user));
+      }, []);
+    ```
+
+- `onAuthStateChanged`
+  - [Firebase|Authentication onAuthStateChanged](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#onauthstatechanged)
+  - Adds an observer for changes to the user's sign-in state
+  - 콜백함수를 인자로 받아, auth state에 변화가 생길 때마다 호출
+
