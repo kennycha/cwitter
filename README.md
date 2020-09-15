@@ -180,4 +180,50 @@
       - 홈페이지 URL은 콜백 URL의 Root 주소를 사용
     - 등록 후 제공되는 Client ID와 Client Secret을 Firebase 에 입력한 후 저장
 
-### 
+### Create Account
+
+- `EmailAuthProvider`
+  - [Firebase|Authentication EmailAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.EmailAuthProvider)
+- Form 재사용
+  - `Auth` 컴포넌트는 state로 `newAccount`를 가지고, 해당 값이 true일 때는 `createUserWithEmailAndPassword`를, false일 때는 `signInWithEmailAndPassword` 를 실행
+  - 두 가지 모두 email과 password를 받아서 로그인하지만, 전혀 다른 흐름
+    - 같은 form 및 input들을 재사용해 두가지 흐름 가능
+
+- `createUserWithEmailAndPassword`
+
+  - [Firebase|Authentication createUserWithEmailAndPassword](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#createuserwithemailandpassword)
+
+  - ``` 
+    Creates a new user account associated with the specified email address and password.
+    
+    On successful creation of the user account, this user will also be signed in to your application.
+    
+    User account creation can fail if the account already exists or the password is invalid.
+    
+    Note: The email address acts as a unique identifier for the user and enables an email-based password reset. This function will create a new user account and set the initial user password.
+    ```
+
+- `signInWithEmailAndPassword`
+
+  - [Firebase|Authentication signInWithEmailAndPassword](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signinwithemailandpassword)
+
+  - ```
+    Asynchronously signs in using an email and password.
+    
+    Fails with an error if the email address and password do not match.
+    
+    Note: The user's password is NOT the password used to access the user's email account. The email address serves as a unique identifier for the user, and the password is used to access the user's account in your Firebase project.
+    ```
+
+- `setPersistence`
+
+  - [Firebase|Authentication setPersistence](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#setpersistence)
+  - 유저를 어떻게 유지할 것인지 방법을 선택하는 method
+  - [Supported types of Auth state persistence](https://firebase.google.com/docs/auth/web/auth-state-persistence)
+    - local : 브라우저를 닫아도 유지
+    - session : 세션 종료 전까지 유지
+    - none : 유지하지 않음
+    - default는 local
+
+  - `Application -> Storage -> IndexedDB -> firebaseLocalStorageDb` 에서 유저 유지 확인 가능 (local인 경우)
+  - 
