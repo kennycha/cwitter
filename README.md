@@ -183,6 +183,7 @@
 ### 이메일 로그인 구현
 
 - `EmailAuthProvider`
+  
   - [Firebase|Authentication EmailAuthProvider](https://firebase.google.com/docs/reference/js/firebase.auth.EmailAuthProvider)
 - Form 재사용
   - `Auth` 컴포넌트는 state로 `newAccount`를 가지고, 해당 값이 true일 때는 `createUserWithEmailAndPassword`를, false일 때는 `signInWithEmailAndPassword` 를 실행
@@ -269,5 +270,70 @@
     } else if (name === "github") {
       provider = new firebaseInstance.auth.GithubAuthProvider();
     }
+    ```
+
+### 로그아웃 구현
+
+- `signOut`
+
+  - [Firebase|Authentication signOut](https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signout)
+  - Signs out the current user
+
+- Redirect
+
+  - 로그아웃 후에 홈 페이지로 redirect
+
+  - `react-router-dom` 
+
+  - `<Redirect>` 
+
+    - [react-router-dom|Redirect](https://reactrouter.com/web/api/Redirect)
+
+    - Rendering a `<Redirect>` will navigate to a new location
+
+    - Router의 가장 마지막에 작성
+
+    - `from` 과 `to` 를 통해, Route 들에 해당하지 않는 주소를 처리
+
+      ```jsx
+      import React from "react";
+      import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+      
+      const AppRouter = () => {
+        return (
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route exact path="/profile">
+                <Profile />
+              </Route>
+              <Redirect from='*' to='/' />
+            </Switch>
+          </Router>
+        );          
+      };
+      
+      export default AppRouter;
+      ```
+
+- `useLocation`
+
+  - [react-router-dom|useLocation](https://reactrouter.com/web/api/Hooks/uselocation)
+
+  - The `useLocation` hook returns the `location` object that represents the current URL. You can think about it like a `useState` that returns a new `location` whenever the URL changes.
+
+  - history 를 사용하기 위한 hook
+
+    - 기존에 사용하던 `withRouter` 를 사용할 필요 없다
+    - `push` method를 통해 원하는 주소로 보낼 수 있다
+
+    ```jsx
+    const history = useHistory();
+    const onLogOutClick = () => {
+      authService.signOut();
+      history.push("/");
+    };
     ```
 
