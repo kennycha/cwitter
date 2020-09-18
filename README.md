@@ -318,11 +318,11 @@
       export default AppRouter;
       ```
 
-- `useLocation`
+- `useHistory`
 
-  - [react-router-dom|useLocation](https://reactrouter.com/web/api/Hooks/uselocation)
+  - [react-router-dom|useHistory](https://reactrouter.com/web/api/Hooks/usehistory)
 
-  - The `useLocation` hook returns the `location` object that represents the current URL. You can think about it like a `useState` that returns a new `location` whenever the URL changes.
+  - The `useHistory` hook gives you access to the `history` instance that you may use to navigate
 
   - history 를 사용하기 위한 hook
 
@@ -337,3 +337,15 @@
     };
     ```
 
+## Firebase Firestore
+
+### Firestore DB 생성
+
+- 데이터베이스 생성
+
+  > Firebase 콘솔 -> Cloud Firestore -> 데이터베이스 만들기
+  - 모드는 `test mode` , 지역은 `asia-northeast1`
+
+- App과 DB 연결
+
+  - `fbase.js` 파일에서 `firebase/firestore` import 한 후 호출 및 export 
