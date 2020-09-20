@@ -344,8 +344,42 @@
 - 데이터베이스 생성
 
   > Firebase 콘솔 -> Cloud Firestore -> 데이터베이스 만들기
+
   - 모드는 `test mode` , 지역은 `asia-northeast1`
 
 - App과 DB 연결
 
   - `fbase.js` 파일에서 `firebase/firestore` import 한 후 호출 및 export 
+
+  - ```js
+    // fbase.js
+    
+    import "firebase/firestore";
+    // ...
+    export const dbService = firebase.firestore()
+    ```
+
+### Cloud Firestore
+
+- [Firebase Docs|firestore](https://firebase.google.com/docs/reference/js/firebase.firestore)
+
+- Collections
+  - [Firebase Docs|firestore CollectionReference](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference)
+  - 폴더와 유사
+    - `like a group of documents`
+- Document
+  - [Firebase Docs|firestore DocumentReference](https://firebase.google.com/docs/reference/js/firebase.firestore.DocumentReference)
+  - 폴더(Collections)에 위치한 문서와 유사
+
+- Document 생성
+  - Console을 통한 생성
+    - `firebase console` -> `cloud firestore` -> `컬렉션 시작`
+    - 문서 ID, 필드, 유형, 값들을 직접 입력해 Document 수동 생성 가능
+  - 코드로 생성
+    - Home 에 있는 Form의 `onSubmit` 이벤트마다, 특정 Collection에 Document를 생성하도록 구현
+    - firestore의 `collection` method를 통해, 특정 collection에 접근
+      - collection Id를 str으로 넣어서 호출
+      - collection reference를 return
+      - 존재하지 않는 Id일 경우 해당 Id로 collection 생성 후 collection reference를 return
+    - Collection Reference의 `add` method를 사용
+      - [Firebase Docs|firestore CollectionReference - add Method](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#add)
