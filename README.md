@@ -374,7 +374,7 @@
 - [Firebase Docs|firestore DocumentReference](https://firebase.google.com/docs/reference/js/firebase.firestore.DocumentReference)
 - 폴더(Collections)에 위치한 문서와 유사
 
-#### Document 생성
+### Document 생성
 
 - Console을 통한 생성
   - `firebase console` -> `cloud firestore` -> `컬렉션 시작`
@@ -388,7 +388,7 @@
   - Collection Reference의 `add` method를 사용
     - [Firebase Docs|firestore CollectionReference - add Method](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#add)
 
-#### Document 접근
+### Document 접근
 
 - Collection Reference의 `get` method를 사용
   - [Firebase Docs|firestore CollectionReference - get Method](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#get)
@@ -447,5 +447,54 @@
     // ...
     ```
 
-  - 
+### 작성자를 포함한 Document 생성
+
+- `App` 에서 현재 user 정보를 가지고, props로 내려주는 방식
+  - `onAuthStateChanged` 를 통해, 로그인 여부 판단 과정에서 로그인 중이라면 해당 user를 현재 user로 `userObj` state에 저장
+- `user` object의 `uid` property를 사용
+  - `onSubmit `이벤트로 cweet을 작성할 때, 현재 user의 `uid`를 `creatorId` 필드에 저장하여 document를 생성
+
+### Realtime Cweets
+
+- `onSnapshot` 을 이용한 Document 접근
+
+  - [Firebase Docs|firestore onSnapshot](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#onsnapshot)
+
+    ```
+    Attaches a listener for QuerySnapshot events. You may either pass individual onNext and onError callbacks or pass a single observer object with next and error callbacks. The listener can be cancelled by calling the function that is returned when onSnapshot is called.
+    ```
+
+  - firestore 내 사항(CRUD)을 realtime으로 알려주는 listener
+
+    - `useEffect` 를 통해 첫 rendering 시에 적용
+
+  - 콜백함수를 통해 cweets 를 get 해오면, firestore 변경에 따라 rendering 이 변화하는 realtime cweets viewer가 가능
+
+    ```jsx
+    const Home = ({ userObj }) => {
+      const [cweets, setCweets] = useState([]);
+      useEffect(() => {
+        dbService.collection("cweets").onSnapshot((snapshot) => {
+          const cweetArray = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setCweets(cweetArray);
+        });
+      }, []);
+        
+      return (
+        <div>
+          {cweets.map((cweet) => (
+            <div key={cweet.id}>
+              <h4>{cweet.text}</h4>
+            </div>
+          ))}
+        </div>
+      )
+    }
+    export default Home;
+    ```
+
+    
 
