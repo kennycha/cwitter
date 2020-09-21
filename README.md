@@ -425,7 +425,7 @@
   - [React Docs|useState - functional updates](https://ko.reactjs.org/docs/hooks-reference.html#functional-updates)
 
     ```
-    If the new state is computed using the previous state, you can pass a function to setState. The function will receive the previous value, and return an updated value. Here’s an example of a counter component that uses both forms of setState:
+    If the new state is computed using the previous state, you can pass a function to setState. The function will receive the previous value, and return an updated value. 
     ```
 
   - 이전 state를 사용해서 새로운 state를 계산한다면, 함수를 `setState` 의 인자로 넘겨줄 수 있다
@@ -496,5 +496,50 @@
     export default Home;
     ```
 
-    
+### Document 삭제
 
+- `DocumentReference` 의 `delete` method를 사용
+
+  - [Firebase Docs|firestore DocumentReference - delete Method](https://firebase.google.com/docs/reference/js/firebase.firestore.DocumentReference#delete)
+
+    ```
+    Deletes the document referred to by this DocumentReference.
+    ```
+
+  - `DocumentReference`는  `firestore`의 `doc` method를 통해 얻을 수 있다
+
+  - ```jsx
+    dbService.doc(`cweets/${cweetObj.id}`).delete()
+    ```
+
+### Document 수정
+
+- `DocumentReference` 의 `delete` method를 사용
+
+  - [Firebase Docs|firestore DocumentReference - update Method](https://firebase.google.com/docs/reference/js/firebase.firestore.DocumentReference#update)
+
+    ```
+    Updates fields in the document referred to by this DocumentReference. The update will fail if applied to a document that does not exist.
+    ```
+
+  - 삭제와 동일하게 `DocumentReference`을 가져온 후, 수정하려는 `field`와 `value` 와 함께 `update` method를 호출
+
+  - ```jsx
+    dbService.doc(`cweets/${cweetObj.id}`).update({
+       text: newCweet,
+    });
+    ```
+
+- `Boolean` 
+
+  - `Boolean` 객체
+
+    - Boolean 객체는 불리언 값을 감싸고 있는 객체
+
+    ```
+    첫 번재 매개변수로서 전달한 값은 필요한 경우 불리언 값으로 변환됩니다. 값이 없거나 0, -0, null, false, NaN, undefined, 빈 문자열 ("")이라면 객체의 초기값은 false가 됩니다. 문자열 "false"를 포함한 그 외 모든 다른 값은 초기값을 true로 설정합니다.
+    ```
+
+  - `Boolean()`
+
+    - `Boolean` 객체 생성자 함수
