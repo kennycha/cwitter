@@ -363,23 +363,89 @@
 
 - [Firebase Docs|firestore](https://firebase.google.com/docs/reference/js/firebase.firestore)
 
-- Collections
-  - [Firebase Docs|firestore CollectionReference](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference)
-  - 폴더와 유사
-    - `like a group of documents`
-- Document
-  - [Firebase Docs|firestore DocumentReference](https://firebase.google.com/docs/reference/js/firebase.firestore.DocumentReference)
-  - 폴더(Collections)에 위치한 문서와 유사
+### Collections
 
-- Document 생성
-  - Console을 통한 생성
-    - `firebase console` -> `cloud firestore` -> `컬렉션 시작`
-    - 문서 ID, 필드, 유형, 값들을 직접 입력해 Document 수동 생성 가능
-  - 코드로 생성
-    - Home 에 있는 Form의 `onSubmit` 이벤트마다, 특정 Collection에 Document를 생성하도록 구현
-    - firestore의 `collection` method를 통해, 특정 collection에 접근
-      - collection Id를 str으로 넣어서 호출
-      - collection reference를 return
-      - 존재하지 않는 Id일 경우 해당 Id로 collection 생성 후 collection reference를 return
-    - Collection Reference의 `add` method를 사용
-      - [Firebase Docs|firestore CollectionReference - add Method](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#add)
+- [Firebase Docs|firestore CollectionReference](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference)
+- 폴더와 유사
+  - `like a group of documents`
+
+### Document
+
+- [Firebase Docs|firestore DocumentReference](https://firebase.google.com/docs/reference/js/firebase.firestore.DocumentReference)
+- 폴더(Collections)에 위치한 문서와 유사
+
+#### Document 생성
+
+- Console을 통한 생성
+  - `firebase console` -> `cloud firestore` -> `컬렉션 시작`
+  - 문서 ID, 필드, 유형, 값들을 직접 입력해 Document 수동 생성 가능
+- 코드로 생성
+  - Home 에 있는 Form의 `onSubmit` 이벤트마다, 특정 Collection에 Document를 생성하도록 구현
+  - firestore의 `collection` method를 통해, 특정 collection에 접근
+    - collection Id를 str으로 넣어서 호출
+    - collection reference를 return
+    - 존재하지 않는 Id일 경우 해당 Id로 collection 생성 후 collection reference를 return
+  - Collection Reference의 `add` method를 사용
+    - [Firebase Docs|firestore CollectionReference - add Method](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#add)
+
+#### Document 접근
+
+- Collection Reference의 `get` method를 사용
+  - [Firebase Docs|firestore CollectionReference - get Method](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#get)
+  - `QuerySnapshot` 을 return
+
+- `QuerySnapshot`
+
+  - [Firebase Docs|firestore QuerySnapshot](https://firebase.google.com/docs/reference/js/firebase.firestore.QuerySnapshot)
+
+    ```
+    A QuerySnapshot contains zero or more DocumentSnapshot objects representing the results of a query. The documents can be accessed as an array via the docs property or enumerated using the forEach method. The number of documents can be determined via the empty and size properties.
+    ```
+
+  - `DocumentSnapshot` 을 0개 이상 포함
+
+  - array 처럼 사용 가능하며, `forEach`를 통해 각각의 `DocumentSnapshot` 에 접근
+
+- `DocumentSnapshot`
+
+  - [Firebase Docs|firestore DocumentSnapshot](https://firebase.google.com/docs/reference/js/firebase.firestore.DocumentSnapshot)
+
+    ```
+    A DocumentSnapshot contains data read from a document in your Firestore database. The data can be extracted with .data() or .get(<field>) to get a specific field.
+    ```
+
+  - [data](https://firebase.google.com/docs/reference/js/firebase.firestore.DocumentSnapshot#data) method를 통해 각 document의 내용을 가져올 수 있다
+
+    ```
+    Retrieves all fields in the document as an Object. Returns 'undefined' if the document doesn't exist.
+    ```
+
+- `useState` 함수적 갱신
+
+  - [React Docs|useState - functional updates](https://ko.reactjs.org/docs/hooks-reference.html#functional-updates)
+
+    ```
+    If the new state is computed using the previous state, you can pass a function to setState. The function will receive the previous value, and return an updated value. Here’s an example of a counter component that uses both forms of setState:
+    ```
+
+  - 이전 state를 사용해서 새로운 state를 계산한다면, 함수를 `setState` 의 인자로 넘겨줄 수 있다
+
+    - 이 경우, 함수는 state의 이전 상태를 받아온다
+
+  - ```jsx
+    // Home.js
+    
+    const [cweets, setCweets] = useState([]);
+    // ...
+    dbCweets.forEach((document) => {
+      const cweetObject = {
+        ...document.data(),
+        id: document.id,
+      };
+      setCweets((prev) => [cweetObject, ...prev]);
+    });
+    // ...
+    ```
+
+  - 
+
