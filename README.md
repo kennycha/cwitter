@@ -543,3 +543,89 @@
   - `Boolean()`
 
     - `Boolean` 객체 생성자 함수
+
+## Firebase Storage
+
+### Storage
+
+- [Firebase Docs|storage](https://firebase.google.com/docs/reference/js/firebase.storage)
+  - 생성
+    - `firebase console` -> `Storage` -> `Storage 생성`
+  - `bucket`
+    - 파일을 저장하는 공간
+
+### Storage 에 파일 업로드
+
+- `<input />` with `type='file'`
+
+  - file 을 입력받는 input 태그
+
+  - `files` 속성을 통해 입력된 파일 리스트 확인 가능
+
+    ```jsx
+    const {
+      target: { files },
+    } = event;
+    ```
+
+    - cf) text 타입인 input의 경우 `value` 속성을 통해 값을 확인
+
+- `FileReader` API
+
+  - [MDN|FileReader](https://developer.mozilla.org/ko/docs/Web/API/FileReader)
+
+  - 생성자 함수 
+
+    - `FileReader()`
+
+      ```js
+      const reader = new FileReader()
+      ```
+
+  - `FileReader` 객체의 `readAsDataURL()` method 를 사용
+
+    - [MDN|FileReader - readAsDataURL](https://developer.mozilla.org/ko/docs/Web/API/FileReader/readAsDataURL)
+
+      ```
+      readAsDataURL 메서드는 컨텐츠를 특정 Blob 이나 File에서 읽어 오는 역할을 합니다. 읽어오는 read 행위가 종료되는 경우에, readyState 의 상태가 DONE이 되며, loadend 이벤트가 트리거 됩니다. 이와 함께 base64 인코딩 된 스트링 데이터가 result 속성(attribute)에 담아지게 됩니다.
+      ```
+
+    - `blob` 을 파라미터로 받아 읽음
+
+      - 이때 `blob`은 읽고자 하는 Blob 또는 File
+
+  - `Blob`
+
+    - [MDN|Blob](https://developer.mozilla.org/ko/docs/Web/API/Blob)
+
+      ```
+      Blob 객체는 파일류의 불변하는 미가공 데이터를 나타냅니다. 텍스트와 이진 데이터의 형태로 읽을 수 있으며, ReadableStream으로 변환한 후 그 메서드를 사용해 데이터를 처리할 수도 있습니다.
+      
+      Blob은 JavaScript 네이티브 형태가 아닌 데이터도 표현할 수 있습니다. File 인터페이스는 사용자 시스템의 파일을 지원하기 위해 Blob 인터페이스를 확장한 것이므로, 모든 블롭 기능을 상속합니다.
+      ```
+
+  - `Blob`에서 데이터 추출하기
+
+    - ```
+      블롭에서 데이터를 읽는 방법 하나는 `FileReader`를 사용하는 것입니다. 다음 코드는 `Blob`의 콘텐츠를 형식 배열로서 읽어 들입니다. 
+      ```
+
+      ```js
+      const reader = new FileReader();
+      reader.addEventListener('loadend', () => {
+         // reader.result contains the contents of blob as a typed array
+      });
+      reader.readAsDataURL(blob);
+      ```
+
+    - `React` 에서는 `FileReader` 객체 인스턴스의 `onloadend` 메서드를 통해 이벤트리스너를 붙일 수 있다
+
+      ```jsx
+      const reader = new FileReader();
+      reader.onloadend = (finishedEvent) => {
+        console.log(finishedEvent);
+      };
+      reader.readAsDataURL(theFile);
+      ```
+
+      
