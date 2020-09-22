@@ -549,9 +549,23 @@
 ### Storage
 
 - [Firebase Docs|storage](https://firebase.google.com/docs/reference/js/firebase.storage)
+
   - 생성
+
     - `firebase console` -> `Storage` -> `Storage 생성`
+
+  - 적용
+
+    ```js
+    import "firebase/storage";
+    // ... 
+    export const storageService = firebase.storage();
+    ```
+
+    
+
   - `bucket`
+
     - 파일을 저장하는 공간
 
 ### Storage 에 파일 업로드
@@ -628,4 +642,72 @@
       reader.readAsDataURL(theFile);
       ```
 
-      
+### Storage 파일을 포함한 Document 생성
+
+- 흐름
+
+  - 먼저 업로드한 파일이 있다면 이를 storage에 저장
+  - 저장한 파일의 url을 가져옴
+  - 가져온 url을 포함시켜서 cweet 생성
+
+- `ref` method 사용
+
+  - [Firebase Docs|storage - ref method](https://firebase.google.com/docs/reference/js/firebase.storage.Storage#ref)
+
+    ```
+    Returns a reference for the given path in the default bucket.
+    ```
+
+  - `Reference` 객체를 반환
+
+    - [Firebase Docs|storage - Reference](https://firebase.google.com/docs/reference/js/firebase.storage.Reference)
+
+      ```
+      Represents a reference to a Google Cloud Storage object. Developers can upload, download, and delete objects, as well as get/set object metadata.
+      ```
+
+- `child` method를 통해, 반환된 `Reference` 아래에 폴더구조와 유사하게 상대 경로를 만들고 그 Reference 를 사용
+
+  - [Firebase Docs|storage - Reference - child method](https://firebase.google.com/docs/reference/js/firebase.storage.Reference#child)
+
+  - 이때, 현재 `userObj`의 `uid` 와 `uuid` 를 통해 생성된 고유 식별자를 조합해 child를 생성
+
+    - 유저 아이디로 구분된 구조로 만들기 위해
+
+    ```jsx
+    const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+    ```
+
+- `putString ` method를 통해 해당 Reference의 위치에 data를 저장
+
+  - [Firebase Docs|storage - Reference - putString method](https://firebase.google.com/docs/reference/js/firebase.storage.Reference#putstring)
+
+    ```
+    Uploads string data to this reference's location.
+    ```
+
+  - `data` 와 `format` 을 넣어서 호출
+
+    ```jsx
+    fileRef.putString(attachment, "data_url");
+    ```
+
+### uuid
+
+- [npm|uuid](https://www.npmjs.com/package/uuid)
+
+  - 고유한(unique) 식별자를 랜덤 생성하는 패키지
+
+  - 설치
+
+    ```bash
+    npm install uuid
+    ```
+
+  - 사용
+
+    ```js
+    import { v4 as uuidv4 } from 'uuid';
+    uuidv4(); // ⇨ ex) '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+    ```
+
