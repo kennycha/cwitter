@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 const Home = ({ userObj }) => {
   const [cweet, setCweet] = useState("");
   const [cweets, setCweets] = useState([]);
+  const [attachment, setAttachment] = useState("");
   useEffect(() => {
     dbService.collection("cweets").onSnapshot((snapshot) => {
       const cweetArray = snapshot.docs.map((doc) => ({
@@ -36,10 +37,14 @@ const Home = ({ userObj }) => {
     const theFile = files[0];
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
-      console.log(finishedEvent);
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setAttachment(result);
     };
     reader.readAsDataURL(theFile);
   };
+  const onClearAttachmentClick = () => setAttachment("");
 
   return (
     <div>
@@ -53,6 +58,17 @@ const Home = ({ userObj }) => {
         />
         <input type="file" accept="image/*" onChange={onFileChange} />
         <input type="submit" value="Cweet" />
+        {attachment && (
+          <div>
+            <img
+              src={attachment}
+              alt="attachedToCweet"
+              width="50px"
+              height="50px"
+            />
+            <button onClick={onClearAttachmentClick}>Clear</button>
+          </div>
+        )}
       </form>
       <div>
         {cweets.map((cweet) => (
