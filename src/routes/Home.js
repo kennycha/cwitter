@@ -7,6 +7,7 @@ const Home = ({ userObj }) => {
   const [cweet, setCweet] = useState("");
   const [cweets, setCweets] = useState([]);
   const [attachment, setAttachment] = useState("");
+
   useEffect(() => {
     dbService.collection("cweets").onSnapshot((snapshot) => {
       const cweetArray = snapshot.docs.map((doc) => ({
@@ -16,23 +17,35 @@ const Home = ({ userObj }) => {
       setCweets(cweetArray);
     });
   }, []);
+
   const onSubmit = async (event) => {
     event.preventDefault();
-    const fileRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
-    await fileRef.putString(attachment, "data_url");
-    // await dbService.collection("cweets").add({
-    //   text: cweet,
-    //   createdAt: Date.now(),
-    //   creatorId: userObj.uid,
-    // });
-    // setCweet("");
+    let attachmentUrl = "";
+    if (attachment !== "") {
+      const attachmentRef = storageService
+        .ref()
+        .child(`${userObj.uid}/${uuidv4()}`);
+      const response = await attachmentRef.putString(attachment, "data_url");
+      attachmentUrl = await response.ref.getDownloadURL();
+    }
+    const cweetObj = {
+      text: cweet,
+      createdAt: Date.now(),
+      creatorId: userObj.uid,
+      attachmentUrl,
+    };
+    await dbService.collection("cweets").add(cweetObj);
+    setCweet("");
+    setAttachment("");
   };
+
   const onChange = (event) => {
     const {
       target: { value },
     } = event;
     setCweet(value);
   };
+
   const onFileChange = (event) => {
     const {
       target: { files },
@@ -45,7 +58,9 @@ const Home = ({ userObj }) => {
       } = finishedEvent;
       setAttachment(result);
     };
-    reader.readAsDataURL(theFile);
+    if (Boolean(theFile)) {
+      reader.readAsDataURL(theFile);
+    }
   };
   const onClearAttachmentClick = () => setAttachment("");
 
@@ -63,12 +78,7 @@ const Home = ({ userObj }) => {
         <input type="submit" value="Cweet" />
         {attachment && (
           <div>
-            <img
-              src={attachment}
-              alt="attachedToCweet"
-              width="50px"
-              height="50px"
-            />
+            <img src={attachment} alt="attachment" width="50px" height="50px" />
             <button onClick={onClearAttachmentClick}>Clear</button>
           </div>
         )}

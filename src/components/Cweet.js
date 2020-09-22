@@ -47,6 +47,14 @@ const Cweet = ({ cweetObj, isOwner }) => {
       ) : (
         <>
           <h4>{cweetObj.text}</h4>
+          {cweetObj.attachmentUrl && (
+            <img
+              src={cweetObj.attachmentUrl}
+              width="50px"
+              height="50px"
+              alt="attachment"
+            />
+          )}
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Cweet</button>

@@ -568,7 +568,7 @@
 
     - 파일을 저장하는 공간
 
-### Storage 에 파일 업로드
+### FileReader API를 통해 업로드한 파일 읽기
 
 - `<input />` with `type='file'`
 
@@ -642,7 +642,7 @@
       reader.readAsDataURL(theFile);
       ```
 
-### Storage 파일을 포함한 Document 생성
+### 업로드한 파일 Storage에 저장
 
 - 흐름
 
@@ -692,11 +692,13 @@
     fileRef.putString(attachment, "data_url");
     ```
 
-### uuid
+  - `UploadTask` 객체를 반환
 
-- [npm|uuid](https://www.npmjs.com/package/uuid)
+- `uuid` 
 
-  - 고유한(unique) 식별자를 랜덤 생성하는 패키지
+  - [npm|uuid](https://www.npmjs.com/package/uuid)
+
+    - 고유한(unique) 식별자를 랜덤 생성하는 패키지
 
   - 설치
 
@@ -710,4 +712,34 @@
     import { v4 as uuidv4 } from 'uuid';
     uuidv4(); // ⇨ ex) '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
     ```
+
+### Storage 파일을 포함한 Document 생성
+
+- `UploadTask` 의 Reference를 이용
+
+  - [Firebase Docs|storage - UploadTask](https://firebase.google.com/docs/reference/js/firebase.storage.UploadTask)
+
+    ```
+    Represents the process of uploading an object. Allows you to monitor and manage the upload.
+    ```
+
+  - [Firebase Docs|storage - UploadTaskSnapshot](https://firebase.google.com/docs/reference/js/firebase.storage.UploadTaskSnapshot)
+
+    ```
+    Holds data about the current state of the upload task.
+    ```
+
+  - `getDownloadURL` method를 사용
+
+    - [Firebase Docs|storage - getDownloadURL](https://firebase.google.com/docs/reference/js/firebase.storage.Reference#getdownloadurl)
+
+      ```
+      Fetches a long lived download URL for this object.
+      ```
+
+    - ```jsx
+      const attachmentUrl = await response.ref.getDownloadURL()
+      ```
+
+  - 
 
