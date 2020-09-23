@@ -741,5 +741,29 @@
       const attachmentUrl = await response.ref.getDownloadURL()
       ```
 
-  - 
+### Document와 함께 포함된 Storage 파일도 삭제
+
+- `Storage` 의 `refFromURL` method 사용
+
+  - [Firebase Docs|storage - Storage - refFromURL](https://firebase.google.com/docs/reference/js/firebase.storage.Storage#reffromurl)
+
+    ```
+    Returns a reference for the given absolute URL.
+    ```
+
+  - url 을 받아 대상의 reference를 반환하는 method
+
+- 반환된 `Reference`의 `delete` method 로 삭제
+
+  - [Firebase Docs|storage - Reference - delete](https://firebase.google.com/docs/reference/js/firebase.storage.Reference#delete)
+
+    ```
+    Deletes the object at this reference's location
+    ```
+
+  - Reference의 위치에 있는 대상을 삭제
+
+  - ```jsx
+    await storageService.refFromURL(cweetObj.attachmentUrl).delete()
+    ```
 
