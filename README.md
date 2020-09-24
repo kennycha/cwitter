@@ -767,3 +767,19 @@
     await storageService.refFromURL(cweetObj.attachmentUrl).delete()
     ```
 
+## Firestore에서 Document들을 가져오는 Query
+
+- `CollectionReference` 의 method 들을 사용
+
+  - `get` method
+
+  - `limit` method
+
+  - `orderBy` method
+
+  - `where` method
+
+  - `onSnapshot` listener
+
+    
+
