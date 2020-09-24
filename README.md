@@ -773,13 +773,52 @@
 
   - `get` method
 
+    - [Firebase Docs|storage - CollectionReference - get](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#get)
+
+      ```
+    Executes the query and returns the results as a QuerySnapshot.
+      ```
+
   - `limit` method
 
+    - [Firebase Docs|storage - CollectionReference - limit](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#limit)
+  
+      ```
+      Creates and returns a new Query that only returns the first matching documents.
+      ```
+  
   - `orderBy` method
-
+  
+    - [Firebase Docs|storage - CollectionReference - orderBy](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#orderby)
+  
+      ```
+      Creates and returns a new Query that's additionally sorted by the specified field, optionally in descending order instead of ascending.
+      ```
+  
   - `where` method
-
+  
+    - [Firebase Docs|storage - CollectionReference - where](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#where)
+  
+      ```
+      Creates and returns a new Query with the additional filter that documents must contain the specified field and the value should satisfy the relation constraint provided.
+      ```
+  
   - `onSnapshot` listener
+  
+    - [Firebase Docs|storage - CollectionReference - onSnapshot](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#onsnapshot)
+  
+      ```
+      Attaches a listener for QuerySnapshot events. You may either pass individual onNext and onError callbacks or pass a single observer object with next and error callbacks. The listener can be cancelled by calling the function that is returned when onSnapshot is called.
+      ```
+  
+- pre-made query
 
-    
+  - firebase 의 firestore는 noSQL 기반이기 때문에, relation 을 통한 몇몇 기능들은 동작하지 않을 수 있다
 
+    ```
+    Uncaught (in promise) FirebaseError: The query requires an index.
+    ```
+
+  - 제대로 동작하도록 하기 위해서는 `index` 를 만들어줘야 하고, Error 문에서 알려주는 주소를 통해 해당하는 `index`를 사전적으로 만들 수 있다
+
+    - 주소로 이동하면 `복합 색인 만들기` 팝업이 있고, `색인 만들기` 를 클릭해 간단하게 `index`를 생성할 수 있다
