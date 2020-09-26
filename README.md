@@ -539,6 +539,43 @@
     }
     export default Home;
     ```
+  
+- `unsubscribe`
+
+  - `onSnapshot` 를 통해 subscribe 하는 것을 중단하지 않은 상태로, 로그아웃하면 아래와 같은 에러가 발생한다
+
+    - `onSnapshot` 리스너가 [메모리 누수]() `(컴퓨터 프로그램이 필요하지 않은 메모리를 계속 점유하고 있는 현상) ` 를 발생시킨다는 것
+
+    ```
+    Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+    ```
+
+  - 따라서 `useEffect` 를 통해 컴포넌트 `unmount` 시점에 해당 구독을 중단`(unsubscribe)` 하도록 해준다
+
+    ```jsx
+    useEffect(() => {
+      const unsubscribe = dbService
+        .collection("cweets")
+        .onSnapshot((snapshot) => {
+          const cweetArray = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setCweets(cweetArray);
+        });
+      return unsubscribe();
+    }, []);
+    ```
+
+  - 이때, `onSnapshot` 리스너는 구독을 중단하는 `unsubscribe` 함수를 반환하기 때문에, 이를 return 문에서 호출해주면 된다
+
+    - [Firebase Docs|firestore CollectionReference - onSnapshot - unsubscribe](https://firebase.google.com/docs/reference/js/firebase.firestore.CollectionReference#returns-=-void)
+
+      ```
+      An unsubscribe function that can be called to cancel the snapshot listener.
+      ```
+
+    - [참고|Unsubscribing from firestore realtime-updates in react](https://brandonlehr.com/reactjs/2018/11/08/unsubscribing-from-firestore-realtime-updates-in-react)
 
 ### Document 삭제
 
