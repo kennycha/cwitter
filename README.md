@@ -358,6 +358,29 @@
 
   - `User` 에 대해 더 많은 정보들을 저장 및 변경하고 싶다면, firestore에 해당 `Users` collection을 생성해 각 User에 대한 `Document`를 생성해 정보를 담을 수 있다
 
+- firebase 상으로는 업데이트가 일어나도 렌더링에 반영되지 않는 버그
+
+  - React는 변화를 감지했을 때 이를 반영하기 위해 리렌더링
+
+  - firebase의 `User` 가 매우 복잡하고 큰 객체이기 때문에, 변화를 감지하지 못하는 경우가 있다
+
+  - firebase의 `User` 를 앱 내에서 사용할 때에, 필요한 부분만 가져온 간단하고 작은 객체를 새로 정의해 사용하는 방식으로 해결 가능
+
+    - 즉, firebase 언어를 react 언어로 연결해주는 방식으로 해결
+
+    ```jsx
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          updateProfile: (args) => user.updateProfile(args),
+        });
+      }
+      setInit(true);
+    });
+    ```
+
 ## Firebase Firestore
 
 ### Firestore DB 생성

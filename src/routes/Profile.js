@@ -2,7 +2,7 @@ import { authService, dbService } from "fbase";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const Profile = ({ userObj }) => {
+const Profile = ({ userObj, refreshUser }) => {
   const history = useHistory();
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
   const onLogOutClick = () => {
@@ -18,9 +18,8 @@ const Profile = ({ userObj }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
     if (userObj.displayName !== newDisplayName) {
-      await userObj.updateProfile({
-        displayName: newDisplayName,
-      });
+      await userObj.updateProfile({ displayName: newDisplayName });
+      refreshUser();
     }
   };
 
@@ -35,7 +34,6 @@ const Profile = ({ userObj }) => {
   useEffect(() => {
     getMyCweets();
   }, []);
-  console.log(userObj);
   return (
     <>
       <form onSubmit={onSubmit}>
