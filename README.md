@@ -337,6 +337,27 @@
     };
     ```
 
+### 프로필 업데이트
+
+- `User` 의 `updateProfile` method 사용
+
+  - [Firebase|Authentication - User - updateProfile](https://firebase.google.com/docs/reference/js/firebase.User#updateprofile)
+
+    ```
+    Updates a user's profile data.
+    ```
+
+  - `updateProfile`을 통해서는 `displayName` , `photoURL` 등 제한적인 정보들만 변경할 수 있다
+
+    ```jsx
+    userObj.updateProfile({
+      displayName: newDisplayName,
+      // photoURL: newPhotoURL
+    })
+    ```
+
+  - `User` 에 대해 더 많은 정보들을 저장 및 변경하고 싶다면, firestore에 해당 `Users` collection을 생성해 각 User에 대한 `Document`를 생성해 정보를 담을 수 있다
+
 ## Firebase Firestore
 
 ### Firestore DB 생성
@@ -767,7 +788,9 @@
     await storageService.refFromURL(cweetObj.attachmentUrl).delete()
     ```
 
-## Firestore에서 Document들을 가져오는 Query
+## Firestore Query
+
+### Firestore 에서 Document 가져오기
 
 - `CollectionReference` 의 method 들을 사용
 
@@ -813,7 +836,7 @@
   
 - pre-made query
 
-  - firebase 의 firestore는 noSQL 기반이기 때문에, relation 을 통한 몇몇 기능들은 동작하지 않을 수 있다
+  - firebase 의 firestore는 noSQL 기반이기 때문에, index를 필요로 하는 몇몇 기능들은 동작하지 않을 수 있다
 
     ```
     Uncaught (in promise) FirebaseError: The query requires an index.
