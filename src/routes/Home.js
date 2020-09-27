@@ -6,22 +6,21 @@ import React, { useEffect, useState } from "react";
 const Home = ({ userObj }) => {
   const [cweets, setCweets] = useState([]);
   useEffect(() => {
-    const unsubscribe = dbService
-      .collection("cweets")
-      .onSnapshot((snapshot) => {
-        const cweetArray = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setCweets(cweetArray);
-      });
-    return unsubscribe();
+    // const unsubscribe = dbService
+    dbService.collection("cweets").onSnapshot((snapshot) => {
+      const cweetArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setCweets(cweetArray);
+    });
+    // return unsubscribe();
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <CweetFactory userObj={userObj} />
-      <div>
+      <div style={{ marginTop: 30 }}>
         {cweets.map((cweet) => (
           <Cweet
             key={cweet.id}

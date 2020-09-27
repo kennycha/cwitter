@@ -1,5 +1,7 @@
 import { dbService, storageService } from "fbase";
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Cweet = ({ cweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
@@ -11,7 +13,7 @@ const Cweet = ({ cweetObj, isOwner }) => {
       await storageService.refFromURL(cweetObj.attachmentUrl).delete();
     }
   };
-  const toggelEditing = () => setEditing((prev) => !prev);
+  const toggleEditing = () => setEditing((prev) => !prev);
   const onSubmit = async (event) => {
     event.preventDefault();
     await dbService.doc(`cweets/${cweetObj.id}`).update({
@@ -26,41 +28,40 @@ const Cweet = ({ cweetObj, isOwner }) => {
     setNewCweet(value);
   };
   return (
-    <div>
+    <div className="cweet">
       {editing ? (
         <>
-          {isOwner && (
-            <>
-              <form onSubmit={onSubmit}>
-                <input
-                  type="text"
-                  placeholder="Edit your cweet"
-                  value={newCweet}
-                  required
-                  onChange={onChange}
-                />
-                <input type="submit" value="Update Cweet" />
-              </form>
-              <button onClick={toggelEditing}>Cancel</button>
-            </>
-          )}
+          <form onSubmit={onSubmit} className="container cweetEdit">
+            <input
+              type="text"
+              placeholder="Edit your cweet"
+              value={newCweet}
+              required
+              autoFocus
+              onChange={onChange}
+              className="formInput"
+            />
+            <input type="submit" value="Update Cweet" className="formBtn" />
+          </form>
+          <span onClick={toggleEditing} className="formBtn cancelBtn">
+            Cancel
+          </span>
         </>
       ) : (
         <>
           <h4>{cweetObj.text}</h4>
           {cweetObj.attachmentUrl && (
-            <img
-              src={cweetObj.attachmentUrl}
-              width="50px"
-              height="50px"
-              alt="attachment"
-            />
+            <img src={cweetObj.attachmentUrl} alt="attachment" />
           )}
           {isOwner && (
-            <>
-              <button onClick={onDeleteClick}>Delete Cweet</button>
-              <button onClick={toggelEditing}>Edit Cweet</button>
-            </>
+            <div className="cweet__actions">
+              <span onClick={onDeleteClick}>
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span onClick={toggleEditing}>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </span>
+            </div>
           )}
         </>
       )}

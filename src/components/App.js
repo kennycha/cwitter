@@ -38,7 +38,7 @@ function App() {
       ) : (
         "Initializing..."
       )}
-      <footer>&copy; {new Date().getFullYear()} Cwitter</footer>
+      {/* <footer>&copy; {new Date().getFullYear()} Cwitter</footer> */}
     </>
   );
 }
